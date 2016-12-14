@@ -1,0 +1,34 @@
+fun:
+mov $r0 0x1000
+iord $r0 I[$r0]
+and $r1 $r0 0x1f
+mov $r2 0x1200
+sethi $r2 0x20000
+iowr I[$r2] $r1
+add b32 $r2 $r2 0x100
+cmp b32 $r1 0x10
+bra e #l1
+shr b32 $r0 $r0 0x10
+and $r0 0xff
+iowr I[$r2] $r0
+bra #l2
+l1:
+add b32 $r2 $r2 0x100
+shr b32 $r0 $r0 0x18
+iowr I[$r2] $r0
+l2:
+mov $r0 0x123
+mov $r2 0x3000
+sethi $r2 0x20000
+iowr I[$r2] $r0
+l3:
+mov $r0 0x2000
+sethi $r0 0x20000
+mov $r2 0
+sethi $r2 0x80000000
+iord $r1 I[$r0]
+and $r1 $r2
+bra ne #l3
+iord $r0 I[$r0]
+and $r0 $r0 0x7ff
+ret
